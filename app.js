@@ -1,34 +1,27 @@
 
 require('dotenv').config();
-const mongoose = require('mongoose');
-const validator = require('validator');
+const { connectDb } = require('./src/services/mongoose');
+const express = require('express');//framework cote serveur HTTP +ROUTES 
+ 
+const userRoutes = require('./src/routes/user');
 
-main().catch( err => console.error(err));
-   
+const app = express();
+const port = process.env.PORT || 3000
 
-async function main(){
-      await mongoose.connect(process.env.MongoUrl);
+// connection dabtabase
+connectDb().catch( err => console.error(err));
+// appeler  routes 
+app.use(express.json());
+app.use(userRoutes);
 
-      const User = mongoose.model('User' ,
-       { email : {
-        type : String,
-        required : true,
-        validate (v) { if(!validator.isEmail(v)) throw new Error('Email invalid')}
-       },
-       password : { type : String,
-         required : true,
-         validate (v) { if(!validator.isLength(v , { min:4 , max:8})) throw new Error (' Password entre 4 et 8 cara ' ); } 
-      },
-       
-      });
 
-     const firstUser = new User( { email : 'hafida@yahoo.fr' , password : "soskjs"});
-   //  const seconduser = new User( { name : 'kamal ', age :30 });
-    const firstsave  = await firstUser.save();
-    // const seconsave = await seconduser.save();
-    console.log( firstsave );
 
-         
- }
+// LANCER APP 
+app.listen(port , () => 
+       console.log(`Server running at : http://localhost:${port}`))
+
+
+
+
 
 
