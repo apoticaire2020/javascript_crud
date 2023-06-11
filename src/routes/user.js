@@ -3,15 +3,28 @@ const User = require('../models/user');
 
 const router = new express.Router();
 
+// Create a new user
 router.post('/users', async (req, res , next) =>  {
      const user = new User(req.body);
      try {
-          const saveUser = await user.save();
-          res.status(201).send(saveUser); // postman response
+          const authToken = await user.generateAuthTokenAndSaveUser() ;
+          res.status(201).send({user , authToken}); // postman response
      } catch (error) {
            res.status(400).send(error); // postman response pas console 
      }
       })
+// LOGIN THE USER 
+router.post('/users/login', async (req, res) => { 
+    try {
+         const user = await User.findUser( req.body.email , req.body.password);
+         const authToken = await user.generateAuthTokenAndSaveUser() ;
+         res.send({ user , authToken });
+    } catch (e) {
+      res.status(500).send(e)
+    }
+});
+
+
 router.get('/users', async (req, res , next) => { 
      try {
        const users =   await User.find({});

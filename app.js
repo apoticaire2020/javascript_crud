@@ -21,29 +21,6 @@ app.listen(port , () =>
        console.log(`Server running at : http://localhost:${port}`))
 
 
-
-
-
-//  try {
-//      const restab =  await collection.find({ sexe : "male"})
-//        console.log(await   restab.toArray());
-//  } catch (e) {
-//        throw  e ; }
-// UPDATE  
-// try {
-//        const updatemohamed = await collection.updateOne({ name : "mohamed"}, {
-//            $set : { name : "Mohammed"  , age : 40},
-//        }) ;
-//        console.log(await updatemohamed);
-// } catch (e) { throw e; }
-    // DELETE 
-try {
-       const deleteaicha = await collection.deleteOne   ({ name : "aicha"});
-       console.log(await deleteaicha);
-} catch (e) { throw e; }    
-return 'done !';   
-}
-
   
    
 
